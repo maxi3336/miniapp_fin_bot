@@ -45,7 +45,7 @@ const formSchema = z.object({
   comment: z.string({ required_error: "Комментарий обязателен!" }).optional(),
 });
 
-export function ExpenseCard() {
+export function IncomeCard() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -59,9 +59,9 @@ export function ExpenseCard() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
-            <CardTitle>Расход</CardTitle>
+            <CardTitle>Доход</CardTitle>
             <CardDescription>
-              С помощью данной формы записывается расход в таблицу.
+              С помощью данной формы записывается доход в таблицу.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
