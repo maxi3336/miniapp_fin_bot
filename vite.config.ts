@@ -12,4 +12,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://45.143.92.70:5001", // Ваш сервер
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
