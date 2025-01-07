@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Toaster } from "@/components/ui/toaster";
 import { ExpenseCard } from "./components/expense/ExpenseCard";
 import { IncomeCard } from "./components/expense/IncomeCard";
 
@@ -17,6 +18,8 @@ export function App() {
           <IncomeCard />
         </TabsContent>
       </Tabs>
+
+      <Toaster />
     </div>
   );
 }

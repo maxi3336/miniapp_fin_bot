@@ -36,6 +36,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
+import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Дата обязательна!" }),
@@ -52,6 +53,11 @@ export function IncomeCard() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    toast({
+      title: "Ура! Доход записан!",
+      duration: 2000,
+    });
   }
 
   return (
