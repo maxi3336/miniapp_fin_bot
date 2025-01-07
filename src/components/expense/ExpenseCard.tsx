@@ -220,8 +220,8 @@ export function ExpenseCard() {
             />
           </CardContent>
         </Card>
-        <div className="absolute bottom-0 left-0 p-4 w-full">
-          <Button size="lg" className="w-full">
+        <div className="absolute bottom-0 left-0 px-4 pb-8 w-full bg-white">
+          <Button className="w-full h-14" size="lg">
             Записать расход
           </Button>
         </div>
