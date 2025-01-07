@@ -56,7 +56,7 @@ export function TransferCard() {
     const amountTo = accountTo[1] + +amount;
 
     try {
-      await fetch("http://localhost:5001/api/update-data", {
+      await fetch("http://45.143.92.70:5001/api/update-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -65,7 +65,7 @@ export function TransferCard() {
         }),
       });
 
-      await fetch("http://localhost:5001/api/update-data", {
+      await fetch("http://45.143.92.70:5001/api/update-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -71,7 +71,7 @@ export function ExpenseCard() {
     }
 
     try {
-      await fetch("http://localhost:5001/api/append-data", {
+      await fetch("http://45.143.92.70:5001/api/append-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -83,7 +83,7 @@ export function ExpenseCard() {
       const cell = "H" + accCell.replace(/[^0-9]/g, "");
       const sum = account[1] - +amount;
 
-      await fetch("http://localhost:5001/api/update-data", {
+      await fetch("http://45.143.92.70:5001/api/update-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const URL = "http://localhost:5001/api/sheet-data?range=";
+const URL = "http://45.143.92.70:5001/api/sheet-data?range=";
 
 const ACCOUNTS_URL = URL + "Главная!G3:H14";
 const INCOME_URL = URL + "Доходы!A2:A9";
