@@ -93,7 +93,7 @@ export function IncomeCard() {
       });
 
       toast({
-        title: "Ура! Расход записан!",
+        title: "Ура! Доход записан!",
         duration: 2000,
       });
     } catch (error) {
