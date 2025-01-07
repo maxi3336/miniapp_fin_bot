@@ -32,32 +32,77 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
 import { toast } from "@/hooks/use-toast";
+import { useSheetData } from "@/context/SheetContext";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Дата обязательна!" }),
   category: z.string({ required_error: "Категория обязательна!" }),
-  amount: z.number({ required_error: "Сумма обязательна!" }),
+  amount: z.string({ required_error: "Сумма обязательна!" }),
   account: z.string({ required_error: "Счёт обязателен!" }),
   comment: z.string({ required_error: "Комментарий обязателен!" }).optional(),
 });
 
 export function ExpenseCard() {
+  const { accounts, expenses, loading } = useSheetData();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit({
+    date,
+    account: accCell,
+    category,
+    amount,
+    comment,
+  }: z.infer<typeof formSchema>) {
+    const account = accounts[accCell];
+    console.log("ACCOUNT: ", account);
 
-    toast({
-      title: "Ура! Расход записан!",
-      duration: 2000,
-    });
+    const values = [formatDate(date), category, +amount, account[0]];
+
+    if (comment) {
+      values.push(comment);
+    }
+
+    try {
+      await fetch("http://localhost:5001/api/append-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          range: "Главная!A:A",
+          values: [values],
+        }),
+      });
+
+      const cell = "H" + accCell.replace(/[^0-9]/g, "");
+      const sum = account[1] - +amount;
+
+      await fetch("http://localhost:5001/api/update-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cell,
+          values: [[sum]],
+        }),
+      });
+
+      toast({
+        title: "Ура! Расход записан!",
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "ОШИБКА! ДАННЫЕ НЕ ЗАПИСАЛИСЬ!",
+        duration: 2000,
+      });
+    }
   }
 
   return (
@@ -82,6 +127,7 @@ export function ExpenseCard() {
                       <FormControl>
                         <Button
                           variant={"outline"}
+                          disabled={loading}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
@@ -121,6 +167,7 @@ export function ExpenseCard() {
                   <FormLabel>Категория</FormLabel>
 
                   <Select
+                    disabled={loading}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -130,13 +177,11 @@ export function ExpenseCard() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="main">Кредитная СберКарта</SelectItem>
-                      <SelectItem value="m@google.com">
-                        Тинькофф Платинум
-                      </SelectItem>
-                      <SelectItem value="m@support.com">
-                        Основной (Максим)
-                      </SelectItem>
+                      {expenses.map((exp, idx) => (
+                        <SelectItem key={idx} value={exp}>
+                          {exp}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -147,15 +192,14 @@ export function ExpenseCard() {
             <FormField
               control={form.control}
               name="amount"
-              render={({ field: { value, onChange, ...rest } }) => (
+              render={({ field: { onChange, ...rest } }) => (
                 <FormItem>
                   <FormLabel>Сумма</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
-                      value={value}
+                      disabled={loading}
                       onChange={({ target: { value } }) =>
-                        onChange(value ? Number(value) : undefined)
+                        onChange(value.replace(/,/g, "."))
                       }
                       {...rest}
                     />
@@ -173,6 +217,7 @@ export function ExpenseCard() {
                   <FormLabel>Счёт</FormLabel>
 
                   <Select
+                    disabled={loading}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -182,13 +227,11 @@ export function ExpenseCard() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="main">Кредитная СберКарта</SelectItem>
-                      <SelectItem value="m@google.com">
-                        Тинькофф Платинум
-                      </SelectItem>
-                      <SelectItem value="m@support.com">
-                        Основной (Максим)
-                      </SelectItem>
+                      {Object.entries(accounts).map(([cell, data]) => (
+                        <SelectItem key={cell} value={cell}>
+                          {data[0]}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -204,6 +247,7 @@ export function ExpenseCard() {
                   <FormLabel>Комментарий</FormLabel>
                   <FormControl>
                     <Textarea
+                      disabled={loading}
                       placeholder="Что-то про трату"
                       className="resize-none"
                       {...field}
@@ -216,7 +260,7 @@ export function ExpenseCard() {
           </CardContent>
         </Card>
         <div className="absolute bottom-0 left-0 px-4 pb-8 w-full bg-white">
-          <Button className="w-full h-14" size="lg">
+          <Button disabled={loading} className="w-full h-14" size="lg">
             Записать расход
           </Button>
         </div>
