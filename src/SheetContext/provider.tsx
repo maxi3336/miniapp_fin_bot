@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { formatAmount, formatDateStr } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import {
   ACCOUNTS_URL,
   EXPENSE_URL,
@@ -32,8 +32,8 @@ export function SheetProvider({ children }: { children: React.ReactNode }) {
         )) as [IAccountsRes, IOperationsRes, ISheetRes, ISheetRes];
 
         const accParsed = parseAccounts(acc);
-        const opParsed = parseOperations(op);
         const incParsed = inc.map((x: string[]) => x[0]);
+        const opParsed = parseOperations(op, incParsed);
         const expParsed = exp.map((x: string[]) => x[0]);
 
         setAccounts(accParsed);
@@ -56,20 +56,28 @@ export function SheetProvider({ children }: { children: React.ReactNode }) {
     }, {});
   }
 
-  function parseOperations(data: IOperationsRes): IOperations {
-    return data.reduce<IOperations>(
-      (acc, [date, category, amount, account, comment]) => {
-        acc.push({
-          date: formatDateStr(date),
-          category,
-          amount: formatAmount(amount),
-          account,
-          comment,
-        });
-        return acc;
-      },
-      []
-    );
+  function parseOperations(
+    data: IOperationsRes,
+    incomes: string[]
+  ): IOperations {
+    const result: IOperations = [];
+
+    for (let i = data.length - 1; i > 0; i--) {
+      const [date, category, amount, account, comment] = data[i];
+
+      result.push({
+        income: incomes.includes(category),
+        // date: formatDateStr(date),
+        date,
+        category,
+        // amount: formatAmount(amount),
+        amount,
+        account,
+        comment,
+      });
+    }
+
+    return result;
   }
 
   async function fetchAccounts() {

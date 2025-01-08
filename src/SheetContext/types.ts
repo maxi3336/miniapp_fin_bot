@@ -11,9 +11,12 @@ export type IOperationsRes = Array<[string, string, string, string, string?]>;
 
 export type IAccounts = Record<string, [string, number]>;
 export type IOperation = {
-  date: Date;
+  income: boolean;
+  // date: Date;
+  date: string;
   category: string;
-  amount: number;
+  // amount: number;
+  amount: string;
   account: string;
   comment?: string;
 };
