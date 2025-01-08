@@ -240,15 +240,23 @@ export function ActionCard() {
             <FormField
               control={form.control}
               name="amount"
-              render={({ field: { onChange, ...rest } }) => (
+              render={({ field: { value, onChange, ...rest } }) => (
                 <FormItem>
                   <FormLabel>Сумма</FormLabel>
                   <FormControl>
                     <Input
+                      type="number"
                       disabled={loading}
-                      onChange={({ target: { value } }) =>
-                        onChange(value.replace(/,/g, "."))
-                      }
+                      value={value}
+                      onChange={({ target: { value: inputValue } }) => {
+                        const formattedValue = inputValue.match(
+                          /^\d*\.?\d{0,2}$/
+                        )
+                          ? inputValue
+                          : value;
+
+                        onChange(formattedValue);
+                      }}
                       {...rest}
                     />
                   </FormControl>
