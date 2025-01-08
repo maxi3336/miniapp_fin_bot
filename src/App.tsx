@@ -7,6 +7,8 @@ import { DataCard } from "@/components/DataCard";
 import { OperationsCard } from "@/components/OperationsCard";
 
 function App() {
+  console.log("TEST LOG");
+
   return (
     <SheetProvider>
       <div className="w-screen h-screen p-6 pb-28 overflow-auto">
