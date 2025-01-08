@@ -16,6 +16,8 @@ interface SheetContextType {
   expenses: string[];
   loading: boolean;
   error: Error | null;
+  onLoading: (value: boolean) => void;
+  onFetch: () => Promise<void>;
 }
 
 const DataContext = createContext<SheetContextType | null>(null);
@@ -31,6 +33,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     fetchData();
   }, []);
 
+  function parseAccounts(data: IAccountsRes): IAccounts {
+    return data.reduce<IAccounts>((result, [name, sum], index) => {
+      const amount = parseFloat(sum.replace(/[^\d,]/g, "").replace(",", "."));
+      result[`G${index + 3}`] = [name, amount];
+      return result;
+    }, {});
+  }
+
   const fetchData = async () => {
     try {
       const urls = [ACCOUNTS_URL, INCOME_URL, EXPENSE_URL];
@@ -43,12 +53,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       setIncomes(inc.map((x: string[]) => x[0]));
       setExpenses(exp.map((x: string[]) => x[0]));
 
-      const result = acc.reduce<IAccounts>((result, [name, sum], index) => {
-        const amount = parseFloat(sum.replace(/[^\d,]/g, "").replace(",", "."));
-        result[`G${index + 3}`] = [name, amount];
-        return result;
-      }, {});
-
+      const result = parseAccounts(acc);
       setAccounts(result);
     } catch (err) {
       setError(err as Error);
@@ -57,9 +62,24 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  async function fetchAccounts() {
+    const response = await fetch(ACCOUNTS_URL);
+    const data: IAccountsRes = await response.json();
+    const result = parseAccounts(data);
+    setAccounts(result);
+  }
+
   return (
     <DataContext.Provider
-      value={{ accounts, incomes, expenses, loading, error }}
+      value={{
+        accounts,
+        incomes,
+        expenses,
+        loading,
+        error,
+        onLoading: setLoading,
+        onFetch: fetchAccounts,
+      }}
     >
       {children}
     </DataContext.Provider>

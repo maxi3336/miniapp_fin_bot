@@ -27,6 +27,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "@/hooks/use-toast";
 import { useSheetData } from "@/context/SheetContext";
+import { api_data, API_UPDATE } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 const formSchema = z.object({
   accountFrom: z.string({ required_error: "Счёт обязателен!" }),
@@ -39,9 +41,14 @@ export function TransferCard() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      accountFrom: undefined,
+      accountTo: undefined,
+      amount: undefined,
+    },
   });
 
-  async function onSubmit({
+  async function handleSubmit({
     accountFrom: from,
     accountTo: to,
     amount,
@@ -56,27 +63,29 @@ export function TransferCard() {
     const amountTo = accountTo[1] + +amount;
 
     try {
-      await fetch("http://45.143.92.70:5001/api/update-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cell: cellFrom,
-          values: [[amountFrom]],
+      await Promise.all([
+        fetch(API_UPDATE, {
+          ...api_data,
+          body: JSON.stringify({
+            cell: cellFrom,
+            values: [[amountFrom]],
+          }),
         }),
-      });
+        fetch(API_UPDATE, {
+          ...api_data,
+          body: JSON.stringify({
+            cell: cellTo,
+            values: [[amountTo]],
+          }),
+        }),
+      ]);
 
-      await fetch("http://45.143.92.70:5001/api/update-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cell: cellTo,
-          values: [[amountTo]],
-        }),
-      });
+      form.reset();
 
       toast({
         title: "Ура! Перевод записан!",
-        duration: 2000,
+        description: `${accountFrom[0]} -> ${accountTo[0]} - ${amount} ₽`,
+        duration: 6000,
       });
     } catch (error) {
       console.error(error);
@@ -89,7 +98,7 @@ export function TransferCard() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
         <Card>
           <CardHeader>
             <CardTitle>Перевод</CardTitle>
@@ -180,7 +189,14 @@ export function TransferCard() {
         </Card>
         <div className="absolute bottom-0 left-0 px-4 pb-8 w-full bg-white">
           <Button disabled={loading} className="w-full h-14" size="lg">
-            Записать расход
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Spinner />
+                Загрузка...
+              </div>
+            ) : (
+              "Сделать перевод"
+            )}
           </Button>
         </div>
       </form>
