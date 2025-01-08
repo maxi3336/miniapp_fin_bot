@@ -1,50 +1,17 @@
-# React + TypeScript + Vite
+# Что это?
+Простенькое приложение для личного использования (пользователи - я и девушка). Помогает сэкономить время на занесении финансовых данных в Гугл Таблицу. Используется как MiniApp в Телеграмме (Mobile-First)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Простенький бэк написан на ExpressJS, где просто хождение в GoogleSheetsAPI
 
-Currently, two official plugins are available:
+### Технологии
+* Основа - React + TypeScript
+* UI-либа - [shadcn/ui](https://ui.shadcn.com/)
+* Деплой - [Render](https://render.com/) и [Vercel](https://vercel.com/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Внешний вид
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+<div style={{ display: "flex" }}>
+  <img src="https://github.com/user-attachments/assets/8739a58b-ef7f-4361-adb9-0e79b07291f1" alt="Пример изображения" width="300">
+  <img src="https://github.com/user-attachments/assets/d1ebb5e4-f769-47e0-b14e-59ebf5bd5161" alt="Пример изображения" width="300">
+  <img src="https://github.com/user-attachments/assets/222db70f-6ccd-4a9c-8b64-5841103d04aa" alt="Пример изображения" width="300">
+</div>
