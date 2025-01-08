@@ -10,6 +10,8 @@
 * UI-либа - [shadcn/ui](https://ui.shadcn.com/)
 * Деплой - [Render](https://render.com/) и [Vercel](https://vercel.com/)
 
+Добавил Service Worker с кэшированием определенных запросов, ответы которых вряд ли когда-то изменятся
+
 ### Внешний вид
 
 <div style={{ display: "flex" }}>
