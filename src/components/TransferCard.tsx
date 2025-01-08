@@ -37,7 +37,7 @@ const formSchema = z.object({
 });
 
 export function TransferCard() {
-  const { accounts, loading } = useSheetData();
+  const { accounts, loading, onLoading } = useSheetData();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,6 +53,8 @@ export function TransferCard() {
     accountTo: to,
     amount,
   }: z.infer<typeof formSchema>) {
+    onLoading(true);
+
     const accountFrom = accounts[from];
     const accountTo = accounts[to];
 
@@ -87,12 +89,14 @@ export function TransferCard() {
         description: `${accountFrom[0]} -> ${accountTo[0]} - ${amount} ₽`,
         duration: 6000,
       });
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
       toast({
         title: "ОШИБКА! ДАННЫЕ НЕ ЗАПИСАЛИСЬ!",
-        duration: 2000,
+        description: `${e}`,
       });
+    } finally {
+      onLoading(false);
     }
   }
 
