@@ -39,9 +39,9 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
 import { toast } from "@/hooks/use-toast";
-import { useSheetData } from "@/context/SheetContext";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "@/components/ui/spinner";
+import { useSheetData } from "@/hooks/use-sheet-data";
 
 const formSchema = z.object({
   date: z.date({ required_error: "Дата обязательна!" }),
@@ -53,7 +53,7 @@ const formSchema = z.object({
 
 type IOperation = "expense" | "income";
 
-export function OperationCard() {
+export function ActionCard() {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [operation, setOperation] = useState<IOperation>("expense");
 

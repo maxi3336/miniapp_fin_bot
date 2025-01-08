@@ -12,6 +12,9 @@ export const api_data = {
   headers: { "Content-Type": "application/json" },
 };
 
+export const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/15uGbuW--Y0Nw8EczDIkmogrtll5NrlY_lM1MqhoW_Sc/edit?gid=0#gid=0";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -22,4 +25,13 @@ export function formatDate(date: Date): string {
   const year = date.getFullYear();
 
   return `${day}.${month}.${year}`;
+}
+
+export function formatDateStr(date: string): Date {
+  const [day, month, year] = date.split(".").map(Number); // Разделяем строку и преобразуем в числа
+  return new Date(year, month - 1, day);
+}
+
+export function formatAmount(value: string): number {
+  return parseFloat(value.replace(/[^\d,]/g, "").replace(",", "."));
 }
