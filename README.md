@@ -13,7 +13,7 @@
 ### Внешний вид
 
 <div style={{ display: "flex" }}>
-  <img src="https://github.com/user-attachments/assets/8739a58b-ef7f-4361-adb9-0e79b07291f1" alt="Пример изображения" width="200">
-  <img src="https://github.com/user-attachments/assets/d1ebb5e4-f769-47e0-b14e-59ebf5bd5161" alt="Пример изображения" width="200">
-  <img src="https://github.com/user-attachments/assets/222db70f-6ccd-4a9c-8b64-5841103d04aa" alt="Пример изображения" width="200">
+  <img src="https://github.com/user-attachments/assets/8739a58b-ef7f-4361-adb9-0e79b07291f1" alt="Пример изображения" width="230">
+  <img src="https://github.com/user-attachments/assets/d1ebb5e4-f769-47e0-b14e-59ebf5bd5161" alt="Пример изображения" width="230">
+  <img src="https://github.com/user-attachments/assets/222db70f-6ccd-4a9c-8b64-5841103d04aa" alt="Пример изображения" width="230">
 </div>
