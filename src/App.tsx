@@ -6,7 +6,7 @@ import { ActionCard } from "@/components/ActionCard";
 import { DataCard } from "@/components/DataCard";
 import { OperationsCard } from "@/components/OperationsCard";
 
-export function App() {
+function App() {
   return (
     <SheetProvider>
       <div className="w-screen h-screen p-6 pb-28 overflow-auto">

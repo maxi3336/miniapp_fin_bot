@@ -80,11 +80,18 @@ export function SheetProvider({ children }: { children: React.ReactNode }) {
     return result;
   }
 
-  async function fetchAccounts() {
-    const response = await fetch(ACCOUNTS_URL);
-    const data: IAccountsRes = await response.json();
-    const result = parseAccounts(data);
-    setAccounts(result);
+  async function fetchData() {
+    const urls = [ACCOUNTS_URL, OPERATIONS_URL];
+    const responses = await Promise.all(urls.map((url) => fetch(url)));
+    const [acc, op] = (await Promise.all(
+      responses.map((response) => response.json())
+    )) as [IAccountsRes, IOperationsRes];
+
+    const accParsed = parseAccounts(acc);
+    const opParsed = parseOperations(op, incomes);
+
+    setAccounts(accParsed);
+    setOperations(opParsed);
   }
 
   return (
@@ -97,7 +104,7 @@ export function SheetProvider({ children }: { children: React.ReactNode }) {
         loading,
         error,
         onLoading: setLoading,
-        onFetch: fetchAccounts,
+        onFetch: fetchData,
       }}
     >
       {children}
