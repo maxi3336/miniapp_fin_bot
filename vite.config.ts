@@ -1,12 +1,11 @@
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { ghPages } from "vite-plugin-gh-pages";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), ghPages()],
-  base: "/miniapp_fin_bot/",
+  plugins: [react()],
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
