@@ -32,7 +32,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn, formatDate } from "@/lib/utils";
+import { API_APPEND, API_UPDATE, cn, formatDate } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
@@ -71,7 +71,7 @@ export function ExpenseCard() {
     }
 
     try {
-      await fetch("http://45.143.92.70:5001/api/append-data", {
+      await fetch(API_APPEND, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -83,7 +83,7 @@ export function ExpenseCard() {
       const cell = "H" + accCell.replace(/[^0-9]/g, "");
       const sum = account[1] - +amount;
 
-      await fetch("http://45.143.92.70:5001/api/update-data", {
+      await fetch(API_UPDATE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

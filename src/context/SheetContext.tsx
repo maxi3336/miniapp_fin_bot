@@ -1,10 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { API_GET } from "@/lib/utils";
 
-const URL = "http://45.143.92.70:5001/api/sheet-data?range=";
-
-const ACCOUNTS_URL = URL + "Главная!G3:H14";
-const INCOME_URL = URL + "Доходы!A2:A9";
-const EXPENSE_URL = URL + "Расходы!A2:A16";
+const ACCOUNTS_URL = API_GET + "Главная!G3:H14";
+const INCOME_URL = API_GET + "Доходы!A2:A9";
+const EXPENSE_URL = API_GET + "Расходы!A2:A16";
 
 type ISheetRes = Array<[string]>;
 type IAccountsRes = Array<[string, string]>;
