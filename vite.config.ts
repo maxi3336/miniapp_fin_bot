@@ -8,8 +8,15 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate", // Автообновление service worker
-      includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"], // Ассеты для PWA
+      injectRegister: "inline",
+      strategies: "injectManifest",
+      injectManifest: {
+        swSrc: "./src/sw.ts",
+        swDest: "./dist/sw.js",
+      },
+      srcDir: "src",
+      filename: "sw.ts",
+      includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
         name: "Finance",
         short_name: "Fin",
