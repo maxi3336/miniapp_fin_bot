@@ -1,6 +1,6 @@
 import { API_GET } from "@/lib/utils";
 
-export const ACCOUNTS_URL = API_GET + "Главная!G3:H14";
+export const ACCOUNTS_URL = API_GET + "Главная!G3:H15";
 export const OPERATIONS_URL = API_GET + "Главная!A3:E";
 export const INCOME_URL = API_GET + "Доходы!A2:A9";
 export const EXPENSE_URL = API_GET + "Расходы!A2:A16";
